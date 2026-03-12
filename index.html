@@ -2532,18 +2532,666 @@ let navHtml = '';
     if (partsContainer) partsContainer.style.display = 'none';
     if (tensesContainer) tensesContainer.style.display = 'none';
     if (day30Container) day30Container.style.display = 'none';
-    if (patternContainer) patternContainer.style.display = 'none';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Grammar Guide • Eight Parts of Speech</title>
+    <!-- Google Fonts & modern reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #4cc9f0;
+            --accent: #f72585;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray-100: #e9ecef;
+            --gray-200: #dee2e6;
+            --gray-300: #ced4da;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.15);
+            --radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #2b32b2 0%, #6f4b9c 100%);
+            min-height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            color: var(--dark);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-radius: 0;
+            box-shadow: none;
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary);
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 20px 0 15px;
+            color: var(--primary-dark);
+        }
+
+        /* --- pronoun table (modern card) --- */
+        .pronoun-table {
+            background: linear-gradient(145deg, #ffffff, #f5f9ff);
+            border-radius: 20px;
+            padding: 20px 15px;
+            margin: 25px 0 15px;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.02), 0 8px 12px -6px rgba(67,97,238,0.2);
+            border: 1px solid rgba(76,201,240,0.2);
+            width: 100%;
+        }
+
+        .pronoun-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 18px;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        .pronoun-header {
+            font-weight: 800;
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 5px;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 8px rgba(67,97,238,0.2);
+        }
+
+        .pronoun-item {
+            background: var(--light);
+            padding: 12px 4px;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--dark);
+            border: 1px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+        
+        .pronoun-item:hover {
+            background: white;
+            border-color: var(--secondary);
+            transform: scale(1.02);
+            box-shadow: 0 8px 14px rgba(76,201,240,0.25);
+        }
+        
+        .pronoun-item strong {
+            color: var(--primary-dark);
+            font-weight: 700;
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 14px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn:hover:before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Main menu button for Parts of Speech */
+        .btn-main {
+            background: linear-gradient(145deg, #ff0000, #cc0000);
+            font-size: 1.3rem;
+            padding: 16px 30px;
+            width: 100%;
+            max-width: 350px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        /* Back button */
+        .btn-back {
+            background: linear-gradient(145deg, #ff4444, #aa0000);
+            color: white;
+        }
+
+        .main-menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 25px 0 15px;
+            width: 100%;
+        }
+        
+        .main-menu-buttons .btn {
+            margin: 0;
+            padding: 16px 8px;
+            background: white;
+            color: var(--dark);
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+        
+        .main-menu-buttons .btn:hover {
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: white;
+        }
+
+        #contentArea {
+            min-height: 350px;
+            margin-bottom: 25px;
+            background: white;
+            padding: 25px 20px;
+            border-radius: 24px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 10px 20px -10px rgba(67,97,238,0.15);
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        #contentArea p { 
+            margin-bottom: 18px; 
+            color: #2d3e50; 
+        }
+        
+        #contentArea ul { 
+            padding-left: 0; 
+            list-style: none; 
+        }
+        
+        #contentArea li { 
+            margin-bottom: 14px; 
+            padding-left: 24px; 
+            position: relative; 
+        }
+        
+        #contentArea li:before {
+            content: '▹';
+            color: var(--accent);
+            font-size: 1.4rem;
+            position: absolute;
+            left: 0;
+            top: -6px;
+        }
+
+        .example-box {
+            background: linear-gradient(145deg, #f2f7ff, #e9f2ff);
+            border-left: 6px solid var(--accent);
+            padding: 18px;
+            border-radius: 20px;
+            margin: 25px 0 10px;
+            box-shadow: 0 8px 12px -8px rgba(247,37,133,0.15);
+            width: 100%;
+        }
+        
+        .example-box strong:first-child { 
+            color: var(--accent); 
+            font-size: 1.1rem; 
+        }
+
+        #navigationArea {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--gray-300);
+            text-align: center;
+            width: 100%;
+        }
+        
+        .nav-buttons { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 12px; 
+            width: 100%;
+        }
+        
+        .nav-buttons .btn {
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+
+        .vocab-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+        
+        .vocab-list li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 40px;
+            border-left: 6px solid var(--success);
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+        
+        .vocab-list li strong {
+            color: var(--primary-dark);
+            font-size: 1rem;
+        }
+        
+        .vocab-list li em {
+            color: var(--accent);
+            font-style: normal;
+            font-weight: 600;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 100%;
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+                padding: 35px 40px;
+            }
+            body {
+                padding: 0;
+                align-items: flex-start;
+            }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2.2rem; }
+            .main-menu-buttons { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                padding: 35px 60px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .pronoun-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-menu-buttons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ Eight Parts of Speech ✨</h1>
+
+    <div id="contentArea"></div>
+    <div id="navigationArea"></div>
+</div>
+
+<script>
+    // ---------- Parts of Speech Content Data ----------
+    const partsOfSpeechData = {
+        mainMenu: {
+            title: '',
+            content: `
+                <div style="text-align: center; margin: 20px 0 10px;">
+                    <button class="btn btn-main" onclick="showPartsOfSpeechButtons()">📚 eight parts of speech</button>
+                </div>
+            `
+        },
+        
+        noun: {
+            title: "📝 Noun (နာမ်)",
+            content: `
+                <p><strong>Definition:</strong> A word that names a person, place, thing, or idea.<br><strong>အဓိပ္ပါယ်:</strong> လူ၊ နေရာ၊ အရာဝတ္ထု သို့မဟုတ် အယူအဆတစ်ခုခု၏ အမည်ကို ဖော်ပြသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>(4) Types of Nouns (နာမ်(4)မျိုး): (Proper Noun/ Common Noun/ Collective Noun/ Abstract Noun) </strong></p>
+                <ul>
+                    <li><strong>Proper Noun (တစ်ဦးဆိုင်နာမ်):</strong> The specific name of a person, place, or organization (လူ၊ နေရာ၊ အဖွဲ့အစည်း၏ သီးခြားအမည်)။ <br><em>Examples: London, Mary, Microsoft</em></li>
+                    <li><strong>Common Noun (အများဆိုင်နာမ်):</strong> A general name for a person, place, or thing (လူ၊ နေရာ၊ အရာဝတ္ထု၏ ယေဘုယျအမည်)။ <br><em>Examples: city, teacher, dog</em></li>
+                    <li><strong>Collective Noun (အုပ်စုနာမ်):</strong> A word for a group of things (အရာဝတ္ထုအုပ်စုကို ခေါ်ဆိုသော စကားလုံး)။ <br><em>Examples: team, family, flock</em></li>
+                    <li><strong>Abstract Noun (စိတ္တဇနာမ်):</strong> An idea, quality, or state (အယူအဆ၊ အရည်အသွေး သို့မဟုတ် အခြေအနေ)။ <br><em>Examples: happiness, freedom, love</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• The <strong>dog</strong> is barking. (ခွေးက ဟောင်နေတယ်။)<br>• <strong>Sarah</strong> is my best friend. (ဆာရာက ကျွန်တော့်ရဲ့ အကောင်းဆုံးသူငယ်ချင်းပဲ။)<br>• <strong>Justice</strong> is important. (တရားမျှတမှုဟာ အရေးကြီးတယ်။)</div>
+            `
+        },
+        
+        pronoun: {
+            title: "👤 Pronoun (နာမ်စား)",
+            content: `
+                <p><strong>Definition:</strong> A word that replaces a noun to avoid repetition.<br><strong>အဓိပ္ပါယ်:</strong> နာမ်ကို ထပ်ခါမပြောဆိုရန် အစားထိုးသုံးစွဲသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Pronouns (နာမ်စားအမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Personal Pronouns (ကိုယ်ပိုင်နာမ်စား):</strong> Refer to specific people or things (လူသို့မဟုတ် အရာဝတ္ထုသီးသန့်ကို ရည်ညွှန်းသည်)။ <br><em>Examples: I, you, he, she, it, we, they</em></li>
+                    <li><strong>Possessive Pronouns (ပိုင်ဆိုင်မှုပြနာမ်စား):</strong> Show ownership (ပိုင်ဆိုင်မှုကို ပြသည်)။ <br><em>Examples: mine, yours, his, hers</em></li>
+                    <li><strong>Demonstrative Pronouns (ညွှန်ပြနာမ်စား):</strong> Point to specific things (အရာဝတ္ထုသီးသန့်ကို ညွှန်ပြသည်)။ <br><em>Examples: this, that, these, those</em></li>
+                </ul>
+                <div class="pronoun-table">
+                    <div style="font-weight:700; margin-bottom:16px; font-size:1.2rem;">📌 pronoun chart (personal & possessive)</div>
+                    <div class="pronoun-grid">
+                        <div class="pronoun-header">subject</div> <div class="pronoun-header">object</div> <div class="pronoun-header">possessive adj</div> <div class="pronoun-header">possessive pron</div>
+                        <div class="pronoun-item"><strong>I</strong> (ငါ)</div> <div class="pronoun-item"><strong>me</strong> (ငါ့ကို)</div> <div class="pronoun-item"><strong>my</strong> (ငါ့)</div> <div class="pronoun-item"><strong>mine</strong> (ငါ့ဟာ)</div>
+                        <div class="pronoun-item"><strong>you</strong> (မင်း)</div> <div class="pronoun-item"><strong>you</strong> (မင်းကို)</div> <div class="pronoun-item"><strong>your</strong> (မင်း၏)</div> <div class="pronoun-item"><strong>yours</strong> (မင်းဟာ)</div>
+                        <div class="pronoun-item"><strong>he</strong> (သူ)</div> <div class="pronoun-item"><strong>him</strong> (သူ့ကို)</div> <div class="pronoun-item"><strong>his</strong> (သူ့)</div> <div class="pronoun-item"><strong>his</strong> (သူ့ဟာ)</div>
+                        <div class="pronoun-item"><strong>she</strong> (သူမ)</div> <div class="pronoun-item"><strong>her</strong> (သူမကို)</div> <div class="pronoun-item"><strong>her</strong> (သူမ၏)</div> <div class="pronoun-item"><strong>hers</strong> (သူမဟာ)</div>
+                        <div class="pronoun-item"><strong>it</strong> (၎င်း)</div> <div class="pronoun-item"><strong>it</strong> (၎င်းကို)</div> <div class="pronoun-item"><strong>its</strong> (၎င်း၏)</div> <div class="pronoun-item"><strong>—</strong></div>
+                        <div class="pronoun-item"><strong>we</strong> (ငါတို့)</div> <div class="pronoun-item"><strong>us</strong> (ငါတို့ကို)</div> <div class="pronoun-item"><strong>our</strong> (ငါတို့၏)</div> <div class="pronoun-item"><strong>ours</strong> (ငါတို့ဟာ)</div>
+                        <div class="pronoun-item"><strong>they</strong> (သူတို့)</div> <div class="pronoun-item"><strong>them</strong> (သူတို့ကို)</div> <div class="pronoun-item"><strong>their</strong> (သူတို့၏)</div> <div class="pronoun-item"><strong>theirs</strong> (သူတို့ဟာ)</div>
+                    </div>
+                    <p style="margin-top:20px; font-size:0.95rem; background:#eef7ff; padding:10px; border-radius:30px;">✨ <strong>ဥပမာ:</strong> <em>I</em> like <em>her</em> car. → ငါ သူမကားကို ကြိုက်တယ်။ / This book is <em>mine</em>. → ဒီစာအုပ်က ငါ့ဟာ။</p>
+                </div>
+                <div class="example-box"><strong>✨ Original Examples </strong><br>• <strong>She</strong> is a doctor. (သူမဟာ ဆရာဝန်တစ်ယောက်ဖြစ်တယ်။)<br>• This book is <strong>mine</strong>. (ဒီစာအုပ်က ကျွန်တော့်ပိုင်ပါ။)<br>• <strong>These</strong> are beautiful. (ဒီတွေက လှတယ်။)</div>
+            `
+        },
+        
+        verb: {
+            title: "⚡ Verb (ကြိယာ)",
+            content: `
+                <p><strong>Definition:</strong> A word that expresses an action, occurrence, or state of being.<br><strong>အဓိပ္ပါယ်:</strong> လုပ်ဆောင်ချက်၊ ဖြစ်ရပ် သို့မဟုတ် ဖြစ်တည်မှုအခြေအနေကို ဖော်ပြသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Verbs (ကြိယာအမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Action Verbs (လုပ်ဆောင်ချက်ကြိယာ):</strong> Describe physical or mental actions (ရုပ်ပိုင်း သို့မဟုတ် စိတ်ပိုင်းဆိုင်ရာ လုပ်ဆောင်ချက်များကို ဖော်ပြသည်)။ <br><em>Examples: run, think, write, create</em></li>
+                    <li><strong>Helping Verbs (အကူကြိယာ):</strong> Help the main verb (အဓိက ကြိယာကို ကူညီသည်)။ <br><em>Examples: is, am, are, was, were, have, has</em></li>
+                    <li><strong>Linking Verbs (ဆက်စပ်ကြိယာ):</strong> Connect the subject to a noun or adjective (ကတ္တားကို နာမ် သို့မဟုတ် နာမဝိသေသနနှင့် ချိတ်ဆက်ပေးသည်)။ <br><em>Examples: seem, become, feel</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• She <strong>runs</strong> every morning. (သူမဟာ မနက်တိုင်း ပြေးလေ့ရှိတယ်။)<br>• They <strong>are studying</strong> for the exam. (သူတို့ဟာ စာမေးပွဲအတွက် လေ့လာနေကြတယ်။)<br>• The food <strong>tastes</strong> delicious. (အစားအစာက အရသာရှိတယ်။)</div>
+            `
+        },
+        
+        adjective: {
+            title: "🎨 Adjective (နာမဝိသေသန)",
+            content: `
+                <p><strong>Definition:</strong> A word that describes or modifies a noun or pronoun.<br><strong>အဓိပ္ပါယ်:</strong> နာမ် သို့မဟုတ် နာမ်စားကို ဖော်ပြချက်ပေးသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Adjectives (နာမဝိသေသနအမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Descriptive Adjectives (သရုပ်ဖော်နာမဝိသေသန):</strong> Describe qualities (အရည်အသွေးများကို ဖော်ပြသည်)။ <br><em>Examples: beautiful, smart, red, large</em></li>
+                    <li><strong>Quantitative Adjectives (အရေအတွက်ပြနာမဝိသေသန):</strong> Indicate quantity (အရေအတွက်ကို ဖော်ပြသည်)။ <br><em>Examples: some, many, few, several</em></li>
+                    <li><strong>Possessive Adjectives (ပိုင်ဆိုင်မှုပြနာမဝိသေသန):</strong> Show ownership (ပိုင်ဆိုင်မှုကို ပြသည်)။ <br><em>Examples: my, your, his, her, its</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• She has <strong>beautiful</strong> eyes. (သူမမှာ လှပတဲ့မျက်လုံးတွေရှိတယ်။)<br>• He is a <strong>smart</strong> student. (သူက ဉာဏ်ကောင်းတဲ့ ကျောင်းသားတစ်ယောက်ဖြစ်တယ်။)<br>• I saw <strong>many</strong> cars. (ကျွန်တော် ကားအများကြီး မြင်လိုက်ရတယ်။)</div>
+            `
+        },
+        
+        adverb: {
+            title: "✨ Adverb (ကြိယာဝိသေသန)",
+            content: `
+                <p><strong>Definition:</strong> A word that modifies a verb, an adjective, or another adverb.<br><strong>အဓိပ္ပါယ်:</strong> ကြိယာ၊ နာမဝိသေသန သို့မဟုတ် အခြားကြိယာဝိသေသနတစ်ခုကို ဖော်ပြချက်ပေးသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Adverbs (ကြိယာဝိသေသနအမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Adverbs of Manner (ပုံစံပြကြိယာဝိသေသန):</strong> Describe how an action is done (လုပ်ဆောင်ချက်ကို မည်သို့ဆောင်ရွက်သည်ကို ဖော်ပြသည်)။ <br><em>Examples: quickly, slowly, carefully</em></li>
+                    <li><strong>Adverbs of Time (အချိန်ပြကြိယာဝိသေသန):</strong> Tell when an action happens (လုပ်ဆောင်ချက်ဖြစ်ပွားသည့် အချိန်ကို ဖော်ပြသည်)။ <br><em>Examples: now, then, yesterday, soon</em></li>
+                    <li><strong>Adverbs of Place (နေရာပြကြိယာဝိသေသန):</strong> Indicate where an action happens (လုပ်ဆောင်ချက်ဖြစ်ပွားသည့် နေရာကို ဖော်ပြသည်)။ <br><em>Examples: here, there, everywhere</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• She walks <strong>gracefully</strong>. (သူမ လှပစွာ လမ်းလျှောက်သည်။)<br>• He will arrive <strong>tomorrow</strong>. (သူ မနက်ဖြန် ရောက်လာမည်။)<br>• Please put it <strong>there</strong>. (ကျေးဇူးပြု၍ အဲဒီမှာ ထားပါ။)</div>
+            `
+        },
+        
+        preposition: {
+            title: "📍 Preposition (ဝိဘတ်)",
+            content: `
+                <p><strong>Definition:</strong> A word that shows the relationship of a noun or pronoun to another word in the sentence.<br><strong>အဓိပ္ပါယ်:</strong> နာမ် သို့မဟုတ် နာမ်စားနှင့် ဝါကျထဲရှိ အခြားစကားလုံးတစ်ခုအကြား ဆက်နွယ်မှုကို ပြသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Prepositions (ဝိဘတ်အမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Prepositions of Place (နေရာပြဝိဘတ်):</strong> Show location (တည်နေရာကို ပြသည်)။ <br><em>Examples: in, on, at, under, over, between</em></li>
+                    <li><strong>Prepositions of Time (အချိန်ပြဝိဘတ်):</strong> Show when something happens (အရာဝတ္ထုတစ်ခုဖြစ်ပွားချိန်ကို ပြသည်)။ <br><em>Examples: at, on, in, before, after, during</em></li>
+                    <li><strong>Prepositions of Direction (ဦးတည်ချက်ပြဝိဘတ်):</strong> Show movement or direction (ရွေ့လျားမှု သို့မဟုတ် ဦးတည်ရာကို ပြသည်)။ <br><em>Examples: to, from, into, onto, through</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• The key is <strong>on</strong> the table. (သော့ချက်က စားပွဲပေါ်မှာ ရှိတယ်။)<br>• We will meet <strong>at</strong> 3 PM. (ကျွန်တော်တို့ ညနေ ၃ နာရီမှာ တွေ့ကြမယ်။)<br>• She walked <strong>through</strong> the forest. (သူမသည် တောအုပ်ကို ဖြတ်လျှောက်ခဲ့တယ်။)</div>
+            `
+        },
+        
+        conjunction: {
+            title: "🔗 Conjunction (သမ္ဗန္ဓ)",
+            content: `
+                <p><strong>Definition:</strong> A word that connects words, phrases, or clauses.<br><strong>အဓိပ္ပါယ်:</strong> စကားလုံးများ၊ စကားစုများ သို့မဟုတ် ဝါကျများကို ဆက်စပ်ပေးသော စကားလုံး ဖြစ်သည်။</p>
+                <p><strong>Types of Conjunctions (သမ္ဗန္ဓအမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>Coordinating Conjunctions (ညှိနှိုင်းဆက်စပ်သမ္ဗန္ဓ):</strong> Connect equal elements (တူညီသော အစိတ်အပိုင်းများကို ဆက်စပ်သည်)။ <br><em>Examples: for, and, nor, but, or, yet, so (FANBOYS)</em></li>
+                    <li><strong>Subordinating Conjunctions (လက်အောက်ခံဆက်စပ်သမ္ဗန္ဓ):</strong> Connect a dependent clause to an independent clause (မှီခိုဝါကျကို အမှီခိုမဲ့ဝါကျနှင့် ဆက်စပ်သည်)။ <br><em>Examples: because, since, although, while, if</em></li>
+                    <li><strong>Correlative Conjunctions (တွဲစပ်သမ္ဗန္ဓ):</strong> Work in pairs (တွဲဖက်၍ အလုပ်လုပ်သည်)။ <br><em>Examples: either...or, neither...nor, not only...but also</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• I like coffee, <strong>but</strong> my brother prefers tea. (ကျွန်တော် ကော်ဖီကြိုက်ပေမယ့် ကျွန်တော့်ညီကတော့ လက်ဖက်ရည်ကို ပိုကြိုက်တယ်။)<br>• He went home <strong>because</strong> he was tired. (သူ ပင်ပန်းလို့ အိမ်ပြန်သွားတယ်။)<br>• <strong>Either</strong> you apologize <strong>or</strong> I will leave. (မင်း တောင်းပန်ရင်တောင်းပန်၊ မဟုတ်ရင် ငါထွက်သွားမယ်။)</div>
+            `
+        },
+        
+        interjection: {
+            title: "😲 Interjection (အာမေဍိတ်)",
+            content: `
+                <p><strong>Definition:</strong> A word used to express emotion suddenly. It is often followed by an exclamation mark.<br><strong>အဓိပ္ပါယ်:</strong> စိတ်ခံစားမှုကို ရုတ်တရက် ဖော်ပြရန်သုံးသော စကားလုံး ဖြစ်ပြီး မကြာခဏ အာမေဍိတ်အမှတ်အသား (!) ဖြင့် အဆုံးသတ်သည်။</p>
+                <p><strong>Types of Exclamation(အာမေဍိတ်အမျိုးအစားများ):</strong></p>
+                <ul>
+                    <li><strong>To express surprise (အံ့အားသင့်ခြင်းကို ဖော်ပြရန်):</strong> <br><em>Examples: Wow!, Oh!, Really?</em></li>
+                    <li><strong>To express pain (နာကျင်မှုကို ဖော်ပြရန်):</strong> <br><em>Examples: Ouch!, Ow!</em></li>
+                    <li><strong>To express joy or excitement (ဝမ်းသာခြင်း သို့မဟုတ် စိတ်လှုပ်ရှားခြင်းကို ဖော်ပြရန်):</strong> <br><em>Examples: Hooray!, Yay!, Yes!</em></li>
+                    <li><strong>To express disgust (စက်ဆုပ်ခြင်းကို ဖော်ပြရန်):</strong> <br><em>Examples: Ew!, Yuck!</em></li>
+                </ul>
+                <div class="example-box"><strong>✨ Examples </strong><br>• <strong>Wow!</strong> That's a beautiful sunset. (ဝိုး! လှပတဲ့ နေဝင်ဆည်းဆာပဲ။)<br>• <strong>Ouch!</strong> I just stubbed my toe. (အောင်း! ကျွန်တော် ခြေချောင်းထိသွားတယ်။)<br>• <strong>Hooray!</strong> We won the match. (ဟူးရေး! ငါတို့ ပွဲနိုင်သွားပြီ။)</div>
+            `
+        }
+    };
+
+    // Page order for navigation
+    const pageOrder = ['mainMenu', 'noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'];
     
-    // Hide main buttons
-    if (showBtn) showBtn.style.display = 'none';
-    if (showBtn2) showBtn2.style.display = 'none';
-    if (showBtn3) showBtn3.style.display = 'none';
-    if (showBtn4) showBtn4.style.display = 'none';
-    if (showBtn5) showBtn5.style.display = 'none';
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    let currentPage = 'mainMenu';
+    let lastMenuLevel = 'mainMenu';
+
+    // ---------- Navigation Functions ----------
+    function navigateTo(pageKey) {
+        currentPage = pageKey;
+        renderPage(pageKey);
+        
+        // Hide all button groups
+        const partsContainer = document.getElementById('partsOfSpeechButtons');
+        if (partsContainer) partsContainer.style.display = 'none';
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBackToMainMenu() {
+        currentPage = 'mainMenu';
+        renderPage('mainMenu');
+        
+        setTimeout(() => {
+            const showBtn = document.querySelector('.btn-main');
+            if (showBtn) showBtn.style.display = 'inline-block';
+            
+            const partsContainer = document.getElementById('partsOfSpeechButtons');
+            if (partsContainer) partsContainer.style.display = 'none';
+        }, 0);
+    }
+
+    function goBackToSecondMenu() {
+        showPartsOfSpeechButtons();
+    }
+
+    function showPartsOfSpeechButtons() {
+        lastMenuLevel = 'partsOfSpeech';
+        
+        const showBtn = document.querySelector('.btn-main');
+        if (showBtn) showBtn.style.display = 'none';
+        
+        // Second Menu content with video
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <h2>📚 Eight Parts of Speech</h2>
+            
+            <div style="margin: 20px 0 30px; text-align: center; background: linear-gradient(145deg, #f0f4fa, #ffffff); padding: 20px; border-radius: 24px; box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1);">
+                <h3 style="color: #4361ee; margin-bottom: 15px;">🎥 သင်ခန်းစာ Video</h3>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 16px; box-shadow: 0 15px 25px -8px rgba(67,97,238,0.3);">
+                    <iframe 
+                        src="https://drive.google.com/file/d/1xsE_2KjuYkP_GewFLe1GJQDU9lHN9sJ5/preview" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                        allow="autoplay" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+            </div>
+            
+            <!-- Parts of Speech Buttons -->
+            <div class="main-menu-buttons">
+                <button class="btn" onclick="navigateTo('noun')">📝 noun</button>
+                <button class="btn" onclick="navigateTo('pronoun')">👤 pronoun</button>
+                <button class="btn" onclick="navigateTo('verb')">⚡ verb</button>
+                <button class="btn" onclick="navigateTo('adjective')">🎨 adjective</button>
+                <button class="btn" onclick="navigateTo('adverb')">✨ adverb</button>
+                <button class="btn" onclick="navigateTo('preposition')">📍 preposition</button>
+                <button class="btn" onclick="navigateTo('conjunction')">🔗 conjunction</button>
+                <button class="btn" onclick="navigateTo('interjection')">😲 interjection</button>
+            </div>
+        `;
+        
+        const navigationArea = document.getElementById('navigationArea');
+        navigationArea.innerHTML = `<div class="nav-buttons"><button class="btn btn-back" onclick="goBackToMainMenu()">← main menu</button></div>`;
+        
+        // Scroll to buttons
+        const buttons = document.querySelector('.main-menu-buttons');
+        if (buttons) buttons.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderPage(pageKey) {
+        const contentArea = document.getElementById('contentArea');
+        const navigationArea = document.getElementById('navigationArea');
+        const page = partsOfSpeechData[pageKey];
+        
+        if (!page) return;
+
+        contentArea.classList.add('loading');
+        setTimeout(() => {
+            contentArea.innerHTML = `<h2>${page.title}</h2>${page.content}`;
+            contentArea.classList.remove('loading');
+
+            const currentIdx = pageOrder.indexOf(pageKey);
+            const prevKey = currentIdx > 0 ? pageOrder[currentIdx - 1] : null;
+            const nextKey = currentIdx < pageOrder.length - 1 ? pageOrder[currentIdx + 1] : null;
+
+            let navHtml = '';
+
+            // Previous and Next buttons
+            if (prevKey && pageKey !== 'mainMenu') {
+                navHtml += `<button class="btn" onclick="navigateTo('${prevKey}')">← Previous</button>`;
+            }
+            if (nextKey && pageKey !== 'mainMenu') {
+                navHtml += `<button class="btn" onclick="navigateTo('${nextKey}')">Next Page →</button>`;
+            }
+
+            // Back buttons
+            if (pageKey !== 'mainMenu') {
+                navHtml += `<div class="back-controls" style="margin-top: 10px;">`;
+                navHtml += `<button class="btn btn-back" onclick="goBackToMainMenu()">🏠 Main Menu</button>`;
+                navHtml += `<button class="btn btn-back" onclick="goBackToSecondMenu()">🔙 Back to Menu</button>`;
+                navHtml += `</div>`;
+            }
+
+            navigationArea.innerHTML = `<div class="nav-buttons">${navHtml}</div>`;
+        }, 250);
+    }
+
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => navigateTo('mainMenu'));
 </script>
+
 </body>
 </html>
