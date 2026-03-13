@@ -210,17 +210,6 @@
             height: 300px;
         }
 
-        /* Main menu button for Parts of Speech */
-        .btn-main {
-            background: linear-gradient(145deg, #ff0000, #cc0000);
-            font-size: 1.3rem;
-            padding: 16px 30px;
-            width: 100%;
-            max-width: 350px;
-            margin: 10px auto;
-            display: block;
-        }
-
         /* Back button */
         .btn-back {
             background: linear-gradient(145deg, #ff4444, #aa0000);
@@ -399,15 +388,6 @@
 <script>
     // ---------- Parts of Speech Content Data ----------
     const partsOfSpeechData = {
-        mainMenu: {
-            title: '',
-            content: `
-                <div style="text-align: center; margin: 20px 0 10px;">
-                    <button class="btn btn-main" onclick="showPartsOfSpeechButtons()">📚 eight parts of speech</button>
-                </div>
-            `
-        },
-        
         noun: {
             title: "📝 Noun (နာမ်)",
             content: `
@@ -537,48 +517,19 @@
         }
     };
 
-    // Page order for navigation
-    const pageOrder = ['mainMenu', 'noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'];
+    // Page order for navigation (excluding mainMenu)
+    const pageOrder = ['noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'];
     
-    let currentPage = 'mainMenu';
-    let lastMenuLevel = 'mainMenu';
+    let currentPage = null;
 
     // ---------- Navigation Functions ----------
     function navigateTo(pageKey) {
         currentPage = pageKey;
         renderPage(pageKey);
-        
-        // Hide all button groups
-        const partsContainer = document.getElementById('partsOfSpeechButtons');
-        if (partsContainer) partsContainer.style.display = 'none';
-        
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function goBackToMainMenu() {
-        currentPage = 'mainMenu';
-        renderPage('mainMenu');
-        
-        setTimeout(() => {
-            const showBtn = document.querySelector('.btn-main');
-            if (showBtn) showBtn.style.display = 'inline-block';
-            
-            const partsContainer = document.getElementById('partsOfSpeechButtons');
-            if (partsContainer) partsContainer.style.display = 'none';
-        }, 0);
-    }
-
-    function goBackToSecondMenu() {
-        showPartsOfSpeechButtons();
-    }
-
-    function showPartsOfSpeechButtons() {
-        lastMenuLevel = 'partsOfSpeech';
-        
-        const showBtn = document.querySelector('.btn-main');
-        if (showBtn) showBtn.style.display = 'none';
-        
-        // Second Menu content with video
+    function showPartsOfSpeechMenu() {
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <h2>📚 Eight Parts of Speech</h2>
@@ -593,7 +544,6 @@
                         allowfullscreen>
                     </iframe>
                 </div>
-                
             </div>
             
             <!-- Parts of Speech Buttons -->
@@ -610,11 +560,9 @@
         `;
         
         const navigationArea = document.getElementById('navigationArea');
-        navigationArea.innerHTML = `<div class="nav-buttons"><button class="btn btn-back" onclick="goBackToMainMenu()">← main menu</button></div>`;
+        navigationArea.innerHTML = ''; // No navigation buttons needed on main menu
         
-        // Scroll to buttons
-        const buttons = document.querySelector('.main-menu-buttons');
-        if (buttons) buttons.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        currentPage = null;
     }
 
     function renderPage(pageKey) {
@@ -636,28 +584,25 @@
             let navHtml = '';
 
             // Previous and Next buttons
-            if (prevKey && pageKey !== 'mainMenu') {
+            if (prevKey) {
                 navHtml += `<button class="btn" onclick="navigateTo('${prevKey}')">← Previous</button>`;
             }
-            if (nextKey && pageKey !== 'mainMenu') {
+            if (nextKey) {
                 navHtml += `<button class="btn" onclick="navigateTo('${nextKey}')">Next Page →</button>`;
             }
 
-            // Back buttons
-            if (pageKey !== 'mainMenu') {
-                navHtml += `<div class="back-controls" style="margin-top: 10px;">`;
-                navHtml += `<button class="btn btn-back" onclick="goBackToMainMenu()">🏠 Main Menu</button>`;
-                navHtml += `<button class="btn btn-back" onclick="goBackToSecondMenu()">🔙 Back to Menu</button>`;
-                navHtml += `</div>`;
-            }
+            // Back to main menu button
+            navHtml += `<div class="back-controls" style="margin-top: 10px;">`;
+            navHtml += `<button class="btn btn-back" onclick="showPartsOfSpeechMenu()">🔙 Back to Menu</button>`;
+            navHtml += `</div>`;
 
             navigationArea.innerHTML = `<div class="nav-buttons">${navHtml}</div>`;
         }, 250);
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => navigateTo('mainMenu'));
+    // Initialize on page load - show the parts of speech menu directly
+    document.addEventListener('DOMContentLoaded', showPartsOfSpeechMenu);
 </script>
 
 </body>
-</html>
+    </html>
