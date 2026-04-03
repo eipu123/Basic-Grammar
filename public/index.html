@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Shan Koe Mee - ရှမ်းကိုးမီး</title>
+    <style>
+        :root {
+            --table-color: radial-gradient(circle, #006b4d 0%, #004d33 70%, #002b1b 100%);
+            --gold: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        
+        body {
+            background-color: #0b0f1a;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; font-family: 'Pyidaungsu', 'Segoe UI', sans-serif;
+            overflow: hidden; color: white;
+        }
+
+        .game-container {
+            width: 95vw; height: 80vh; max-width: 1000px; max-height: 600px;
+            background: var(--table-color);
+            border-radius: 50% / 50%;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.5);
+            border: 12px solid #2c1e14;
+        }
+
+        .center-area {
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; z-index: 5;
+        }
+        .pot-box {
+            background: rgba(0,0,0,0.7);
+            padding: 5px 20px; border-radius: 20px;
+            border: 1px solid var(--gold); margin-bottom: 10px;
+        }
+        .pot-amount { font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+        .chips-stack { font-size: 40px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+
+        .player-slot { 
+            position: absolute; width: 130px; 
+            display: flex; flex-direction: column; align-items: center; 
+            transition: all 0.3s ease;
+        }
+
+        .slot-1 { top: -25px; left: 50%; transform: translateX(-50%); }
+        .slot-2 { top: 15%; right: -15px; }
+        .slot-3 { bottom: 15%; right: -15px; }
+        .slot-4 { bottom: -25px; left: 50%; transform: translateX(-50%); }
+        .slot-5 { bottom: 15%; left: -15px; }
+        .slot-6 { top: 15%; left: -15px; }
+
+        .avatar-box {
+            position: relative; width: 65px; height: 65px;
+            background: #222; border-radius: 50%;
+            border: 3px solid #ccc; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .banker .avatar-box { border-color: var(--gold); box-shadow: 0 0 15px var(--gold); }
+        .active-turn .avatar-box { border-color: #00ff00; animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+        }
+
+        .banker-tag {
+            position: absolute; bottom: -5px; right: -5px;
+            background: var(--gold); color: black; font-size: 10px; font-weight: bold;
+            padding: 2px 6px; border-radius: 5px; z-index: 2;
+        }
+
+        .player-info { text-align: center; margin-top: 5px; }
+        .name { font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px; }
+        .balance { font-size: 11px; color: #00ff00; font-weight: bold; }
+
+        .cards-container { 
+            display: flex; justify-content: center; 
+            margin-top: 5px; height: 60px;
+        }
+        .card {
+            width: 40px; height: 58px;
+            background: white; border-radius: 4px;
+            color: black; font-weight: bold; font-size: 14px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+            margin: 0 -8px; border: 1px solid #ddd; position: relative;
+        }
+        .card.red { color: #d32f2f; }
+        .card.face-down {
+            background: #8b0000;
+            border: 2px solid white;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 10px);
+        }
+        .card.face-down div { display: none; }
+
+        .controls-area {
+            position: fixed; bottom: 20px; right: 20px;
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .btn {
+            padding: 12px 25px; border-radius: 25px; border: none; font-weight: bold;
+            cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        .btn-draw { background: #3498db; }
+        .btn-stay { background: #e67e22; }
+        .btn-bet { background: var(--gold); color: black; }
+        .btn-sit { background: #27ae60; font-size: 10px; padding: 5px 12px; }
+
+        .status-bar {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            padding: 8px 25px; border-radius: 30px; border: 1px solid var(--gold);
+            font-size: 13px; z-index: 1000; white-space: nowrap;
+        }
+
+        .win-tag { 
+            position: absolute; top: -35px; font-weight: bold; font-size: 14px;
+            text-shadow: 0 0 5px black;
+        }
+        
+        .bet-control {
+            margin-top: 5px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .bet-input {
+            width: 60px;
+            padding: 3px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="status-bar" id="statusText">ဂိမ်းစတင်ရန် စောင့်နေသည်...</div>
+
+<div class="game-container">
+    <div class="center-area">
+        <div class="pot-box">
+            <div style="font-size: 9px; color: #ccc;">BANKER FUND</div>
+            <div class="pot-amount" id="potAmount">3,000</div>
+        </div>
+        <div class="chips-stack">💰</div>
+    </div>
+    
+    <div id="seatsContainer"></div>
+</div>
+
+<div class="controls-area" id="controls"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let myId = null;
+    let mySeat = null;
+    let myPrivateHand = [];
+    let betAmount = 100;
+
+    function initTable() {
+        const container = document.getElementById('seatsContainer');
+        container.innerHTML = '';
+        for (let i = 1; i <= 6; i++) {
+            container.innerHTML += `
+                <div class="player-slot slot-${i}" id="slot-${i}">
+                    <div id="result-${i}" class="win-tag"></div>
+                    <div class="avatar-box">
+                        <span id="name-tag-${i}" style="font-size:10px">လွတ်</span>
+                        <div id="banker-tag-${i}"></div>
+                    </div>
+                    <div class="player-info">
+                        <div class="name" id="name-${i}">Empty</div>
+                        <div class="balance" id="balance-${i}"></div>
+                    </div>
+                    <div class="cards-container" id="cards-${i}"></div>
+                    <div id="bet-area-${i}" style="margin-top:5px"></div>
+                </div>
+            `;
+        }
+    }
+
+    function updateUI(data) {
+        const { players, seats, gameState } = data;
+        document.getElementById('potAmount').innerText = gameState.bankerFund.toLocaleString();
+        
+        let statusMsg = gameState.status.toUpperCase();
+        if (gameState.status === 'waiting') statusMsg = "ကစားသမားစောင့်နေသည်";
+        if (gameState.status === 'betting') statusMsg = "လောင်းကြေးထပ်ရန် ၁၀ စက္ကန့်";
+        if (gameState.status === 'dealing') statusMsg = "ဖဲဝေနေသည်...";
+        if (gameState.status === 'playing' && gameState.currentTurn) statusMsg = `ထိုင် ${gameState.currentTurn} ဖဲဆွဲရန်`;
+        if (gameState.status === 'ended') statusMsg = "ပွဲပြီးသည်! ရလဒ်များ";
+        document.getElementById('statusText').innerText = statusMsg;
+
+        if (players[myId]) {
+            mySeat = players[myId].seat;
+        }
+
+        for (let i = 1; i <= 6; i++) {
+            const playerId = seats[i];
+            const player = playerId ? players[playerId] : null;
+            const isBanker = gameState.bankerId === i;
+            const slotEl = document.getElementById(`slot-${i}`);
+
+            slotEl.classList.toggle('banker', isBanker);
+            slotEl.classList.toggle('active-turn', gameState.currentTurn === i);
+
+            document.getElementById(`banker-tag-${i}`).innerHTML = isBanker ? '<div class="banker-tag">ဒိုင်</div>' : '';
+            document.getElementById(`name-${i}`).innerText = player ? player.name : 'လွတ်နေသည်';
+            document.getElementById(`balance-${i}`).innerHTML = player ? `<span style="color:#ffd700">${player.balance.toLocaleString()}</span>` : '';
+            document.getElementById(`name-tag-${i}`).innerText = player ? '👤' : 'လွတ်';
+
+            // Cards Display
+            const cardsDiv = document.getElementById(`cards-${i}`);
+            cardsDiv.innerHTML = '';
+            
+            let hand = gameState.playerHands[i] || [];
+            
+            if (i === mySeat && myPrivateHand.length > 0 && gameState.status !== 'ended') {
+                hand = myPrivateHand;
+            }
+
+            if (hand.length > 0) {
+                hand.forEach(card => {
+                    const cardEl = document.createElement('div');
+                    const shouldReveal = (gameState.status === 'ended' || i === mySeat);
+                    
+                    cardEl.className = `card ${card.c} ${!shouldReveal ? 'face-down' : ''}`;
+                    if (shouldReveal) {
+                        cardEl.innerHTML = `<div>${card.v}</div><div style="font-size:10px">${card.s}</div>`;
+                    } else {
+                        cardEl.innerHTML = `<div>?</div>`;
+                    }
+                    cardsDiv.appendChild(cardEl);
+                });
+            }
+
+            // Results
+            const resDiv = document.getElementById(`result-${i}`);
+            if (gameState.status === 'ended') {
+                const winner = gameState.winners.find(w => w.seat === i);
+                if (winner) {
+                    resDiv.innerText = winner.winAmount >= 0 ? `+${winner.winAmount}` : `${winner.winAmount}`;
+                    resDiv.style.color = winner.winAmount >= 0 ? '#00ff00' : '#ff4444';
+                }
+            } else {
+                resDiv.innerText = '';
+            }
+
+            // Bet area and actions
+            const betArea = document.getElementById(`bet-area-${i}`);
+            betArea.innerHTML = '';
+            
+            // Sit button
+            if (!player && !mySeat && myId) {
+                const sitBtn = document.createElement('button');
+                sitBtn.innerText = 'ထိုင်မယ်';
+                sitBtn.className = 'btn btn-sit';
+                sitBtn.onclick = () => socket.emit('sitDown', i);
+                betArea.appendChild(sitBtn);
+            } 
+            // Stand button for my seat
+            else if (player && player.id === myId) {
+                const standBtn = document.createElement('button');
+                standBtn.innerText = 'ထရပ်မယ်';
+                standBtn.className = 'btn btn-sit';
+                standBtn.style.background = '#f44336';
+                standBtn.onclick = () => socket.emit('standUp');
+                betArea.appendChild(standBtn);
+                
+                // Betting controls
+                if (gameState.status === 'betting' && mySeat !== gameState.bankerId) {
+                    const betDiv = document.createElement('div');
+                    betDiv.className = 'bet-control';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.value = betAmount;
+                    input.min = 100;
+                    input.max = Math.min(5000, player.balance);
+                    input.step = 100;
+                    input.className = 'bet-input';
+                    input.onchange = (e) => betAmount = parseInt(e.target.value);
+                    
+                    const betBtn = document.createElement('button');
+                    betBtn.innerText = `လောင်း ${betAmount}`;
+                    betBtn.className = 'btn btn-bet';
+                    betBtn.style.padding = '5px 10px';
+                    betBtn.style.fontSize = '10px';
+                    betBtn.onclick = () => {
+                        if (betAmount <= player.balance && betAmount >= 100) {
+                            socket.emit('placeBet', betAmount);
+                            betBtn.disabled = true;
+                            betBtn.innerText = 'လောင်းပြီး';
+                        }
+                    };
+                    
+                    betDiv.appendChild(input);
+                    betDiv.appendChild(betBtn);
+                    betArea.appendChild(betDiv);
+                }
+            }
+            
+            // Show bet amount
+            if (gameState.playerBets[i]) {
+                const betSpan = document.createElement('div');
+                betSpan.style.fontSize = '10px';
+                betSpan.style.color = '#ffd700';
+                betSpan.innerText = `လောင်း: ${gameState.playerBets[i]}`;
+                betArea.appendChild(betSpan);
+            }
+        }
+        renderControls(gameState);
+    }
+
+    function renderControls(gameState) {
+        const controls = document.getElementById('controls');
+        controls.innerHTML = '';
+        
+        if (gameState.status === 'playing' && gameState.currentTurn === mySeat) {
+            const drawBtn = document.createElement('button');
+            drawBtn.innerText = 'ဖဲဆွဲမယ် ✨';
+            drawBtn.className = 'btn btn-draw';
+            drawBtn.onclick = () => socket.emit('playerAction', 'draw');
+            
+            const stayBtn = document.createElement('button');
+            stayBtn.innerText = 'ရပ်မယ် 🛑';
+            stayBtn.className = 'btn btn-stay';
+            stayBtn.onclick = () => socket.emit('playerAction', 'stay');
+            
+            controls.appendChild(drawBtn);
+            controls.appendChild(stayBtn);
+        }
+    }
+
+    socket.on('yourId', id => {
+        myId = id;
+        console.log('My ID:', myId);
+    });
+    
+    socket.on('gameState', updateUI);
+    
+    socket.on('yourHand', (hand) => { 
+        myPrivateHand = hand; 
+        console.log('Received private hand:', hand);
+    });
+
+    initTable();
+</script>
+</body>
+  </html>
